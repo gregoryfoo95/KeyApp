@@ -14,6 +14,7 @@ import plotly as pp
 import streamlit as st
 from google.oauth2 import service_account
 from gsheetsdb import connect
+from gspread_panda import Spread,Client
 
 # Create a connection object.
 credentials = service_account.Credentials.from_service_account_info(
@@ -22,8 +23,12 @@ scopes=[
 "https://www.googleapis.com/auth/spreadsheets",
 ],
 )
-conn = connect(credentials=credentials)
+client = Client(scope = "https://www.googleapis.com/auth/spreadsheets", creds = credentials)
+spreadsheetname = "Sheet1"
+spread = Spread(spreadsheetname,client=client)
 
+sh = client.open(spreadsheetname)
+worksheet_list = sh.worksheets()
 #---------------------------------#
 # Page layout
 ## Page expands to full width
