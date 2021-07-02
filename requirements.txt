@@ -7,4 +7,4 @@ bs4
 plotly==4.14.3
 plotly_express
 gsheetsdb==0.1.13
-gspread-pandas==2.3.0
+gspread-pandas
