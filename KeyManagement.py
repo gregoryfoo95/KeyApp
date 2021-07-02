@@ -13,9 +13,6 @@ from PIL import Image
 import time
 import plotly as pp
 import gspread
-from google.oauth2.service_account import Credentials
-from gspread_pandas import Spread, Client
-
 from google.oauth2 import service_account
 from gsheetsdb import connect
 
