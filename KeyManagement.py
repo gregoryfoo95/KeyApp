@@ -20,13 +20,13 @@ st.set_page_config(layout="wide")
 #---------------------------------#
 # Title
 
-image = Image.open('house.png')
+image = Image.open('photo_keys-on-wooden-background.jpg')
 
 st.image(image, width = 500)
-st.title('HDB Resale Flat Dashboard')
+st.title('Key Management App')
 
 st.markdown("""
-**This app retrieves data of HDB Resale Prices from data.gov.sg.**
+**AWOF 805 Key Status.**
 """)
 
 st.sidebar.header('User Input Features')
