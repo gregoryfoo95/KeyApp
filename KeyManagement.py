@@ -14,7 +14,7 @@ import plotly as pp
 import streamlit as st
 from google.oauth2 import service_account
 from gsheetsdb import connect
-from gspread_panda import Spread,Client
+from gspread_pandas import Spread,Client
 
 # Create a connection object.
 credentials = service_account.Credentials.from_service_account_info(
