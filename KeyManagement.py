@@ -33,5 +33,5 @@ st.sidebar.header('User Input Features')
 
 # Web scraping of data.gov.sg data
 #
-@st.cache(persist=True,show_spinner = True)
+#@st.cache(persist=True,show_spinner = True)
 #def load_data():
