@@ -1,4 +1,3 @@
-import streamlit as st
 import pandas as pd
 import base64
 import matplotlib.pyplot as plt
@@ -12,7 +11,7 @@ from urllib.request import Request, urlopen
 from PIL import Image
 import time
 import plotly as pp
-import gspread
+import streamlit as st
 from google.oauth2 import service_account
 from gsheetsdb import connect
 
