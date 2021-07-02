@@ -9,7 +9,6 @@ import csv
 from bs4 import BeautifulSoup
 import re
 from urllib.request import Request, urlopen
-import dask.dataframe as dd
 from PIL import Image
 import time
 import plotly as pp
