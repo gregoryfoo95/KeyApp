@@ -12,8 +12,16 @@ from urllib.request import Request, urlopen
 from PIL import Image
 import time
 import plotly as pp
-import gspread as gs
-
+import gsheetsdb import connect
+from google.oauth2 import service_account
+# Create a connection object
+ credentials = service_account.Credentials.from_service_account_info(
+    st.secrets["gcp_service_account"],
+    scopes =[
+        "https://www.googleapis.com/auth/spreadsheets",
+    ],
+ )
+conn = connet(credentials = credentials)
 
 
 #---------------------------------#
