@@ -24,10 +24,10 @@ scopes=[
 ],
 )
 client = Client(scope = "https://www.googleapis.com/auth/spreadsheets", creds = credentials)
-spreadsheetname = "Sheet1"
+spreadsheetname = "Key Management"
 spread = Spread(spreadsheetname,client=client)
 
-sh = client.open(spreadsheetname)
+sh = gspread.open(spreadsheetname)
 worksheet_list = sh.worksheets()
 #---------------------------------#
 # Page layout
