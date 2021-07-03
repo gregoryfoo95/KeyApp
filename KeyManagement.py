@@ -18,17 +18,11 @@ from gspread_pandas import Spread,Client
 
 # Create a connection object.
 credentials = service_account.Credentials.from_service_account_info(
-st.secrets["gcp_service_account"],
-scopes=[
-"https://www.googleapis.com/auth/spreadsheets",
-],
-)
-client = Client(scope = "https://www.googleapis.com/auth/spreadsheets", creds = credentials)
-spreadsheetname = "Key Management"
-spread = Spread(spreadsheetname,client=client)
-
-sh = gspread.open(spreadsheetname)
-worksheet_list = sh.worksheets()
+    st.secrets["gcp_service_account"],
+    scopes=[
+        "https://www.googleapis.com/auth/spreadsheets",
+    ])
+conn = connect(credentials=credentials)
 #---------------------------------#
 # Page layout
 ## Page expands to full width
