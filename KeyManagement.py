@@ -40,36 +40,38 @@ st.sidebar.header('User Input Features')
 # Create a connection object.
 scope = ['https://spreadsheets.google.com/feeds',
      'https://www.googleapis.com/auth/drive']
-#credentials = ServiceAccountCredentials.from_json_keyfile_name('key-management-318608-1e9ed181d642.json', scopes = scope) #Change to your downloaded JSON file name
-credentials = service_account.Credentials.from_service_account_info(
-    st.secrets["gcp_service_account"],
-    scopes = scope)
+credentials = ServiceAccountCredentials.from_json_keyfile_name('key-management-318608-1e9ed181d642.json', scope) #Change to your downloaded JSON file name
+#credentials = service_account.Credentials.from_service_account_info(
+#    st.secrets["gcp_service_account"],
+#    scopes = scope)
 
-conn = connect(credentials=credentials)
+#conn = connect(credentials=credentials)
 client = gc.authorize(credentials)
 spreadsheets = ['Key Management']
 # Perform SQL query on the Google Sheet.
 # Uses st.cache to only rerun when the query changes or after 10 min.
 @st.cache(ttl=600)
 def main(spreadsheets):
-	df = pd.DataFrame()
-	for spreadsheet in spreadsheets:
+    df = pd.DataFrame()
+    for spreadsheet in spreadsheets:
 		#Open the Spreadsheet
-		sh = client.open(spreadsheet)
+        sh = client.open(spreadsheet)
 
 		#Get all values in the first worksheet
-		worksheet = sh.get_worksheet(0)
-		data = worksheet.get_all_values()
+        worksheet = sh.get_worksheet(0)
+        data = worksheet.get_all_values()
+        val = worksheet.cell(1,2).value
+        #Save the data inside the temporary pandas dataframe
+        df_temp = pd.DataFrame(columns = [i for i in range(len(data[0]))])
+        df_temp.columns = ['S/N', 'Name', 'Location']
+        for i in range(1,len(data)):
+            df_temp.loc[len(df_temp)] = data[i]
 
-		#Save the data inside the temporary pandas dataframe
-		df_temp = pd.DataFrame(columns = [i for i in range(len(data[0]))])
-		for i in range(1,len(data)):
-			df_temp.loc[len(df_temp)] = data[i]
-
+    return df_temp
     #return df_temp
 
 df_temp = main(spreadsheets)
-st.dataframe(df_temp)
+st.table(df_temp)
 #def run_query(query):
 #    rows = conn.execute(query, headers=3)
 #    return rows
