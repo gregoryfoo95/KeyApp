@@ -33,8 +33,8 @@ st.title('Key Management App')
 st.markdown("""
 **AWOF 805 Key Status.**
 """)
-
-st.sidebar.header('User Input Features')
+username = st.text_input("Please key in your name")
+st.sidebar.header('Choose Key Numbers which you wish to draw.')
 
 
 # Create a connection object.
@@ -48,9 +48,10 @@ credentials = ServiceAccountCredentials.from_json_keyfile_name('key-management-3
 #conn = connect(credentials=credentials)
 client = gc.authorize(credentials)
 spreadsheets = ['Key Management']
+
 # Perform SQL query on the Google Sheet.
 # Uses st.cache to only rerun when the query changes or after 10 min.
-@st.cache(ttl=600)
+@st.cache()
 def main(spreadsheets):
     df = pd.DataFrame()
     for spreadsheet in spreadsheets:
@@ -60,7 +61,6 @@ def main(spreadsheets):
 		#Get all values in the first worksheet
         worksheet = sh.get_worksheet(0)
         data = worksheet.get_all_values()
-        val = worksheet.cell(1,2).value
         #Save the data inside the temporary pandas dataframe
         df_temp = pd.DataFrame(columns = [i for i in range(len(data[0]))])
         df_temp.columns = ['S/N', 'Name', 'Location']
@@ -70,15 +70,16 @@ def main(spreadsheets):
     return df_temp
     #return df_temp
 
+#Printing of Key Status
 df_temp = main(spreadsheets)
 st.table(df_temp)
-#def run_query(query):
-#    rows = conn.execute(query, headers=3)
-#    return rows
 
-#sheet_url = st.secrets["private_gsheets_url"]
-#rows = run_query(f'SELECT * FROM "{sheet_url}"')
+#Creating User Input UI for key selection
+key_list = sorted(df_temp['S/N'].unique())
+selected_key = st.sidebar.multiselect('S/N', key_list)
+loc_list = ['Keypress','FMC','EGR Bay','Gun Bay','WO Office','MS Office','Ops Office','Project Room',' OIC Office', 'OC Office']
+selected_loc = st.sidebar.multiselect('Location',loc_list)
 
-# Print results.
-#for row in rows:
-#    st.write(f"{row.number} has a :{row.name}:")
+# Creating another connection to google sheet
+sheet = client.open(spreadsheets[0])
+sheet.update_cell(1,1,"hello")
