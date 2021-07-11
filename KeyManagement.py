@@ -17,7 +17,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 from gsheetsdb import connect
 from gspread_pandas import Spread,Client
 import gspread as gc
-from df2gspread import df2gspread as d2g
+
 #---------------------------------#
 # Page layout
 ## Page expands to full width
