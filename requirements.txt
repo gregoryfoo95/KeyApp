@@ -8,3 +8,4 @@ plotly==4.14.3
 plotly_express
 gsheetsdb==0.1.13
 gspread-pandas
+oauth2client
