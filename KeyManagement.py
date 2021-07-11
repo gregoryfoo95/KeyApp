@@ -60,7 +60,7 @@ scope = ['https://spreadsheets.google.com/feeds',
      'https://www.googleapis.com/auth/drive']
 #credentials = ServiceAccountCredentials.from_json_keyfile_name('key-management-318608-1e9ed181d642.json', scope) #Change to your downloaded JSON file name
 credentials = service_account.Credentials.from_service_account_info(
-    st.secrets["gcp_service_account"],
+    st.secrets[gcp_service_account],
     scopes = scope)
 
 conn = connect(credentials=credentials)
