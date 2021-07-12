@@ -69,7 +69,7 @@ def display(spreadsheets):
         worksheet = sh.get_worksheet(0)
         data = worksheet.get_all_values()
         df_temp = pd.DataFrame(columns = [i for i in range(len(data[0]))])
-        df_temp.columns = ['S/N','Name','Location']
+        df_temp.columns = ['Key No.','Name','Location']
         for i in range(1,len(data)):
             df_temp.loc[len(df_temp)] = data[i]
 
@@ -95,7 +95,7 @@ def main(spreadsheets):
         data = worksheet.get_all_values()
         #Save the data inside the temporary pandas dataframe
         df_temp = pd.DataFrame(columns = [i for i in range(len(data[0]))])
-        df_temp.columns = ['S/N','Name','Location']
+        df_temp.columns = ['Key No.','Name','Location']
         for i in range(1,len(data)):
             df_temp.loc[len(df_temp)] = data[i]
 
