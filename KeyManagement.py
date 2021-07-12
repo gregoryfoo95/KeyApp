@@ -40,7 +40,7 @@ decision = st.radio(
     ('Withdraw', 'Return'))
 with st.form("Details"):
     username = st.text_input("Please key in your name")
-    selected_key = st.multiselect('S/N', key_list)
+    selected_key = st.multiselect('Key No.', key_list)
     selected_keylist = list(selected_key)
     if decision == 'Withdraw':
         loc_list = ['FMC','EGR Bay','Gun Bay','WO Office','MS Office','Ops Office','Project Room',' OIC Office', 'OC Office']
