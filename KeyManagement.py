@@ -35,10 +35,6 @@ st.markdown('MVP in development by Greggy')
 #Creating User Input UI for key selection
 key_list = list(range(1,68))
 
-with st.form("Details"):
-    username = st.text_input("Please key in your name")
-    st.form_submit_button(label='Submit',help='Press to confirm details')
-
 decision = st.radio(
     "Would you like to withdraw or return the keys?",
     ('Withdraw', 'Return'))
