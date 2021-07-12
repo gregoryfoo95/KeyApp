@@ -28,7 +28,7 @@ st.set_page_config(layout="wide")
 
 image = Image.open('photo_keys-on-wooden-background.jpg')
 
-st.image(image, width = 400)
+st.image(image, width = 350)
 st.title('AWOF Key Management App')
 st.markdown('MVP in development by Greggy')
 
