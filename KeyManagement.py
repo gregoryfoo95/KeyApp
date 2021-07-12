@@ -62,7 +62,7 @@ conn = connect(credentials=credentials)
 client = gc.authorize(credentials)
 spreadsheets = ['Key Management']
 
-@st.cache(suppress_st_warning=True)
+#@st.cache(suppress_st_warning=True)
 def display(spreadsheets):
     for spreadsheet in spreadsheets:
         sh=client.open(spreadsheet)
@@ -76,7 +76,7 @@ def display(spreadsheets):
     return df_temp
 # Perform SQL query on the Google Sheet.
 # Uses st.cache to only rerun when the query changes or after 10 min.
-@st.cache(suppress_st_warning=True)
+#@st.cache(suppress_st_warning=True)
 def main(spreadsheets):
     df = pd.DataFrame()
     for spreadsheet in spreadsheets:
