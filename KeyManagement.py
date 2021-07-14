@@ -99,7 +99,7 @@ def main(spreadsheets):
             if not selected_loc:
                 break
             else :
-                worksheet.update_cell(keynum+1,3,selected_loc[0])
+                worksheet.update_cell(keynum+1,3,selected_loc)
 
         data = worksheet.get_all_values()
         #Save the data inside the temporary pandas dataframe
