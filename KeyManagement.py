@@ -28,10 +28,17 @@ st.set_page_config(layout="wide")
 
 image = Image.open('photo_keys-on-wooden-background.jpg')
 
-st.image(image, width = 350)
+st.image(image, width = 800)
 st.title('AWOF Key Management App')
-st.markdown('MVP in development by Greggy')
+st.markdown('Please follow the sequence of instructions stated below and refer to the Overall Key Status below for an overview.')
 
+txt = st.text_area('Instructions', '''
+     1) Select either Withdraw or return. \n
+     2) If Withdraw is selected, please indicate your Name, Key Nos and Location which it is drawn to. \n
+     3) If Return is selected, please indicate your Name and Key Nos (Location is automatically set to Keypress). \n
+     4) Click on Submit to register the changes in the main database. \n
+     5) Check the Overall Key Status at the bottom of the web app for an overview.
+     ''')
 #Creating User Input UI for key selection
 key_list = list(range(1,68))
 
