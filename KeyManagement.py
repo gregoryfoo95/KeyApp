@@ -39,15 +39,17 @@ decision = st.radio(
     "Would you like to withdraw or return the keys?",
     ('Withdraw', 'Return'))
 with st.form("Details"):
-    username = st.text_input("Please key in your name")
-    selected_key = st.multiselect('Key No.', key_list)
-    selected_keylist = list(selected_key)
     if decision == 'Withdraw':
+        username = st.text_input("Please key in your name")
+        selected_key = st.multiselect('S/N', key_list)
+        selected_keylist = list(selected_key)
         loc_list = ['FMC','EGR Bay','Gun Bay','WO Office','MS Office','Ops Office','Project Room',' OIC Office', 'OC Office']
         selected_loc = st.selectbox('Which location is/are the key(s) drawn to?',loc_list)
     else:
-        loc_list = ['Keypress']
-        selected_loc = st.selectbox('Which location is/are the key(s) drawn to?',loc_list)
+        username = st.text_input("Please key in your name")
+        selected_key = st.multiselect('S/N', key_list)
+        selected_keylist = list(selected_key)
+        selected_loc = ['Keypress']
     st.form_submit_button(label='Submit',help='Press to confirm details')
 
 
