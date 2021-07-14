@@ -107,4 +107,20 @@ if username != '':
     df_temp = main(spreadsheets)
 else :
     df_temp = display(spreadsheets)
+
+#Plotting of Illustration of Key locations
+fig,ax = plt.subplots(figsize = (13,1))
+plt.rcParams["font.family"] = "comic sans"
+fig.patch.set_facecolor('xkcd:turquoise')
+ax.set_facecolor('azure')
+ax.scatter(df_temp['S/N'],df_temp['Location'], c = 'black', edgecolors = 'none', s = 20)
+ax.set_title('Illustration of Keys in various Locations')
+ax.set_xlabel('Key No.')
+ax.set_ylabel('Location')
+ax.tick_params(axis = 'x', labelsize = 7)
+plt.grid(color = 'lightgray', linestyle = '-.', linewidth = 0.5)
+st.pyplot(fig)
+
+#Illustration of Overview
 st.table(df_temp)
+
