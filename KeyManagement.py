@@ -113,7 +113,7 @@ fig,ax = plt.subplots(figsize = (13,1))
 plt.rcParams["font.family"] = "comic sans"
 fig.patch.set_facecolor('xkcd:turquoise')
 ax.set_facecolor('azure')
-ax.scatter(df_temp['S/N'],df_temp['Location'], c = 'black', edgecolors = 'none', s = 20)
+ax.scatter(df_temp['Key No.'],df_temp['Location'], c = 'black', edgecolors = 'none', s = 20)
 ax.set_title('Illustration of Keys in various Locations')
 ax.set_xlabel('Key No.')
 ax.set_ylabel('Location')
