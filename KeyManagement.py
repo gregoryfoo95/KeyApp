@@ -29,7 +29,7 @@ st.set_page_config(layout="wide")
 image = Image.open('photo_keys-on-wooden-background.jpg')
 
 st.image(image, width = 800)
-st.title('AWOF Key Management App')
+st.title('AWOF Key Management App v1.0')
 st.markdown('Please follow the sequence of instructions stated below and refer to the Overall Key Status below for an overview.')
 
 txt = st.text_area('Instructions', '''
