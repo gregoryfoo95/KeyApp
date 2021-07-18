@@ -21,7 +21,11 @@ import gspread as gc
 #---------------------------------#
 # Page layout
 ## Page expands to full width
-st.set_page_config(layout="wide")
+st.set_page_config(
+    page_title="Key Management App",
+    page_icon="🧊",
+    layout="wide",
+    initial_sidebar_state="expanded")
 
 #---------------------------------#
 # Title
@@ -32,13 +36,14 @@ st.set_page_config(layout="wide")
 st.title('AWOF Key Management App v1.0')
 st.markdown('Please follow the sequence of instructions stated below and refer to the Overall Key Status below for an overview.')
 
-txt = st.text_area('Instructions', '''
-     1) Select either Withdraw or return. \n
-     2) If Withdraw is selected, please indicate your Name, Key Nos and Location which it is drawn to. \n
-     3) If Return is selected, please indicate your Name and Key Nos (Location is automatically set to Keypress). \n
-     4) Click on Submit to register the changes in the main database. \n
-     5) Check the Overall Key Status at the bottom of the web app for an overview.
-     ''')
+with st.beta_expander("🧙 Click here for more instructions on how to use this app 🔮"):
+    st.markdown('''
+     <p>1) Select either Withdraw or return.
+     <p>2) If Withdraw is selected, please indicate your Name, Key Nos and Location which it is drawn to.
+     <p>3) If Return is selected, please indicate your Name and Key Nos (Location is automatically set to Keypress).
+     <p>4) Click on Submit to register the changes in the main database.
+     <p>5) Check the Overall Key Status at the bottom of the web app for an overview.
+     ''',unsafe_allow_html = True)
 #Creating User Input UI for key selection
 key_list = list(range(1,71))
 
@@ -114,9 +119,15 @@ def main(spreadsheets):
 #Printing/Updating of Key Status
 if username != '':
     df_temp = main(spreadsheets)
+
+    with st.spinner('Searching through endless piles of paperwork...'):
+        time.sleep(2.5)
+    st.success('Located! I hope...')
 else :
     df_temp = display(spreadsheets)
-
+    with st.spinner('Searching through endless piles of paperwork...'):
+        time.sleep(2.5)
+    st.success('Located! I hope...')
 #Plotting of Illustration of Key locations
 fig,ax = plt.subplots(figsize = (5,8))
 plt.rcParams["font.family"] = "comic sans"
