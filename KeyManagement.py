@@ -17,41 +17,52 @@ from oauth2client.service_account import ServiceAccountCredentials
 from gsheetsdb import connect
 from gspread_pandas import Spread,Client
 import gspread as gc
-from df2gspread import df2gspread as d2g
+
 #---------------------------------#
 # Page layout
 ## Page expands to full width
-st.set_page_config(layout="wide")
+st.set_page_config(
+    page_title="Key Management App",
+    page_icon="🧊",
+    layout="wide",
+    initial_sidebar_state="expanded")
 
 #---------------------------------#
 # Title
 
-image = Image.open('photo_keys-on-wooden-background.jpg')
+#image = Image.open('photo_keys-on-wooden-background.jpg')
 
-st.image(image, width = 500)
-st.title('Key Management App')
+#st.image(image, width = 800)
+st.title('AWOF Key Management App v1.0')
+st.markdown('Please follow the sequence of instructions stated below and refer to the Overall Key Status below for an overview.')
 
-st.markdown("""
-**AWOF 805 Key Status.**
-""")
-
-st.sidebar.header('Select the Keys and Location it is drawn to.')
-
+with st.beta_expander("🧙 Click here for more instructions on how to use this app 🔮"):
+    st.markdown('''
+     <p>1) Select either Withdraw or return.
+     <p>2) If Withdraw is selected, please indicate your Name, Key Nos and Location which it is drawn to.
+     <p>3) If Return is selected, please indicate your Name and Key Nos (Location is automatically set to Keypress).
+     <p>4) Click on Submit to register the changes in the main database.
+     <p>5) Check the Overall Key Status at the bottom of the web app for an overview.
+     ''',unsafe_allow_html = True)
 #Creating User Input UI for key selection
-#key_list = sorted(df_temp['S/N'].unique())
+key_list = list(range(1,71))
 
+decision = st.radio(
+    "Would you like to withdraw or return the keys?",
+    ('Withdraw', 'Return'))
 with st.form("Details"):
-    username = st.text_input("Please key in your name")
+    if decision == 'Withdraw':
+        username = st.text_input("Please key in your name")
+        selected_key = st.multiselect('Please select the key(s)', key_list)
+        selected_keylist = list(selected_key)
+        loc_list = ['FMC','EGR Bay','Gun Bay','WO Office','MS Office','Ops Office','Project Room','OIC Office', 'OC Office']
+        selected_loc = st.selectbox('Which location is/are the key(s) drawn to?',loc_list)
+    else:
+        username = st.text_input("Please key in your name")
+        selected_key = st.multiselect('Please select the key(s)', key_list)
+        selected_keylist = list(selected_key)
+        selected_loc = 'Keypress'
     st.form_submit_button(label='Submit',help='Press to confirm details')
-
-if username == None:
-    print("Missing username.")
-else:
-    key_list = list(range(1,68))
-    selected_key = st.sidebar.multiselect('S/N', key_list)
-    selected_keylist = list(selected_key)
-    loc_list = ['Keypress','FMC','EGR Bay','Gun Bay','WO Office','MS Office','Ops Office','Project Room',' OIC Office', 'OC Office']
-    selected_loc = st.sidebar.multiselect('Location',loc_list)
 
 
 
@@ -59,29 +70,27 @@ else:
 scope = ['https://spreadsheets.google.com/feeds',
      'https://www.googleapis.com/auth/drive']
 credentials = ServiceAccountCredentials.from_json_keyfile_name('key-management-318608-1e9ed181d642.json', scope) #Change to your downloaded JSON file name
-#credentials = service_account.Credentials.from_service_account_info(
-#    st.secrets["gcp_service_account"],
-#    scopes = scope)
+#credentials = service_account.Credentials.from_service_account_info(st.secrets['gcp_service_account'], scopes = scope)
 
-#conn = connect(credentials=credentials)
+conn = connect(credentials=credentials)
 client = gc.authorize(credentials)
 spreadsheets = ['Key Management']
 
-@st.cache()
+#@st.cache(suppress_st_warning=True)
 def display(spreadsheets):
     for spreadsheet in spreadsheets:
         sh=client.open(spreadsheet)
         worksheet = sh.get_worksheet(0)
         data = worksheet.get_all_values()
         df_temp = pd.DataFrame(columns = [i for i in range(len(data[0]))])
-        df_temp.columns = ['S/N','Name','Location']
+        df_temp.columns = ['Key No.','Name','Location']
         for i in range(1,len(data)):
             df_temp.loc[len(df_temp)] = data[i]
 
     return df_temp
 # Perform SQL query on the Google Sheet.
 # Uses st.cache to only rerun when the query changes or after 10 min.
-@st.cache()
+#@st.cache(suppress_st_warning=True)
 def main(spreadsheets):
     df = pd.DataFrame()
     for spreadsheet in spreadsheets:
@@ -95,12 +104,12 @@ def main(spreadsheets):
             if not selected_loc:
                 break
             else :
-                worksheet.update_cell(keynum+1,3,selected_loc[0])
+                worksheet.update_cell(keynum+1,3,selected_loc)
 
         data = worksheet.get_all_values()
         #Save the data inside the temporary pandas dataframe
         df_temp = pd.DataFrame(columns = [i for i in range(len(data[0]))])
-        df_temp.columns = ['S/N','Name','Location']
+        df_temp.columns = ['Key No.','Name','Location']
         for i in range(1,len(data)):
             df_temp.loc[len(df_temp)] = data[i]
 
@@ -110,6 +119,33 @@ def main(spreadsheets):
 #Printing/Updating of Key Status
 if username != '':
     df_temp = main(spreadsheets)
+
+    with st.spinner('Searching through endless piles of paperwork...'):
+        time.sleep(2.5)
+    st.success('Located! I hope...')
 else :
     df_temp = display(spreadsheets)
+    with st.spinner('Searching through endless piles of paperwork...'):
+        time.sleep(2.5)
+    st.success('Located! I hope...')
+
+#Plotting of Illustration of Key locations
+fig,ax = plt.subplots(figsize = (5,8))
+plt.rcParams["font.family"] = "comic sans"
+fig.patch.set_facecolor('xkcd:turquoise')
+ax.set_facecolor('azure')
+ax.scatter(df_temp['Location'], df_temp['Key No.'], c = 'black', edgecolors = 'none', s = 20)
+ax.set_title('Illustration of Keys in various Locations')
+ax.set_xlabel('Location')
+ax.set_ylabel('Key No.')
+ax.tick_params(axis = 'x', labelsize = 7)
+ax.tick_params(axis = 'y',labelsize = 5)
+#For secondary axes
+ax2 = ax.twinx()
+ax2.scatter(df_temp['Location'], df_temp['Key No.'], c = 'black', edgecolors = 'none', s = 20)
+ax2.tick_params(axis = 'y',labelsize = 5)
+plt.grid(color = 'lightgray', linestyle = '-.', linewidth = 0.5)
+st.pyplot(fig)
+
+#Illustration of Overview
 st.table(df_temp)
