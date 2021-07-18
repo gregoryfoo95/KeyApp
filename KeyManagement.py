@@ -33,7 +33,7 @@ st.set_page_config(
 #image = Image.open('photo_keys-on-wooden-background.jpg')
 
 #st.image(image, width = 800)
-st.title('AWOF Key Management App v1.0')
+st.title('AWOF Key Management App v1.1')
 st.markdown('Please follow the sequence of instructions stated below and refer to the Overall Key Status below for an overview.')
 
 with st.beta_expander("🧙 Click here for more instructions on how to use this app 🔮"):
