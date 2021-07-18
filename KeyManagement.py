@@ -40,7 +40,7 @@ txt = st.text_area('Instructions', '''
      5) Check the Overall Key Status at the bottom of the web app for an overview.
      ''')
 #Creating User Input UI for key selection
-key_list = list(range(1,68))
+key_list = list(range(1,71))
 
 decision = st.radio(
     "Would you like to withdraw or return the keys?",
