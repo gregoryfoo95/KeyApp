@@ -62,7 +62,7 @@ with st.form("Details"):
         selected_key = st.multiselect('Please select the key(s)', key_list)
         selected_keylist = list(selected_key)
         selected_loc = 'Keypress'
-    st.form_submit_button(label='Submit',help='Press to confirm details')
+    submit_button = st.form_submit_button(label='Submit',help='Press to confirm details')
 
 
 
