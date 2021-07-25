@@ -210,7 +210,7 @@ else:
 
 #with st.beta_expander('Click here to show the Key Status Overview'):
 with st.spinner('Painting the charts and drawing the tables...'):
-    time.sleep(1)
+    time.sleep(2)
     st.success('Success!')
     chart = st.empty()
     data_table = st.empty()
