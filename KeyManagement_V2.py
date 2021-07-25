@@ -151,8 +151,8 @@ if decision == 'Withdraw':
         reset_selection = ''
         if st.form_submit_button(label='Submit',help='Press to confirm details'):
             with st.spinner("Loading..."):
-                time.sleep(2)
-                st.success('Done!')
+                time.sleep(1)
+                st.success('Submitted!')
                 df_temp = main(spreadsheets)
 else:
     return_form = st.empty()
@@ -167,7 +167,7 @@ else:
         if st.form_submit_button('Submit'):
             with st.spinner("Loading..."):
                 time.sleep(2)
-                st.success('Done!')
+                st.success('Submitted!')
                 if reset_selection == 'No':
                     df_temp = main(spreadsheets)
                 else:
@@ -211,7 +211,7 @@ else:
 #with st.beta_expander('Click here to show the Key Status Overview'):
 with st.spinner('Painting the charts and drawing the tables...'):
     time.sleep(1)
-    st.success('About done...')
+    st.success('Success!')
     chart = st.empty()
     data_table = st.empty()
     df_temp = display(spreadsheets)
