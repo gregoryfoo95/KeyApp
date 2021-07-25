@@ -153,7 +153,7 @@ if decision == 'Withdraw':
         reset_selection = ''
         if st.form_submit_button(label='Submit',help='Press to confirm details'):
             with st.spinner("Loading..."):
-                time.sleep(1)
+                time.sleep(0.5)
                 st.success('Submitted!')
                 df_temp = main(spreadsheets)
 else:
@@ -168,7 +168,7 @@ else:
         reset_selection = st.selectbox('Please indicate if you would like to perform a hard reset',['No','Yes'])
         if st.form_submit_button('Submit'):
             with st.spinner("Loading..."):
-                time.sleep(1)
+                time.sleep(0.5)
                 st.success('Submitted!')
                 if reset_selection == 'No':
                     df_temp = main(spreadsheets)
@@ -184,35 +184,35 @@ else:
 #    if reset_selection == 'Yes':
 #        df_temp = refresh(spreadsheets)
 #        with st.spinner('Searching through endless piles of paperwork...'):
-#            time.sleep(1)
+#            time.sleep(0.5)
 #            st.success('Located! I hope...')
 #        reset_selection = '' #Reset the variable
 #    else:
 #        if username != '' and selected_key != '' and selected_loc != '':
 #            df_temp = main(spreadsheets)
 #            with st.spinner('Searching through endless piles of paperwork...'):
-#                time.sleep(1)
+#                time.sleep(0.5)
 #                st.success('Located! I hope...')
 #        else:
 #            df_temp = display(spreadsheets)
 #            with st.spinner('Searching through endless piles of paperwork...'):
-#                time.sleep(1)
+#                time.sleep(0.5)
 #                st.success('Located! I hope...')
 #else :
 #    if username != '' and selected_key != '' and selected_loc != '':
 #        df_temp = main(spreadsheets)
 #        with st.spinner('Searching through endless piles of paperwork...'):
-#            time.sleep(1)
+#            time.sleep(0.5)
 #            st.success('Located! I hope...')
 #    else:
 #        df_temp = display(spreadsheets)
 #        with st.spinner('Searching through endless piles of paperwork...'):
-#            time.sleep(1)
+#            time.sleep(0.5)
 #            st.success('Located! I hope...')
 
 #with st.beta_expander('Click here to show the Key Status Overview'):
 with st.spinner('Painting the charts and drawing the tables...'):
-    time.sleep(1)
+    time.sleep(0.5)
     st.success('Success!')
     chart = st.empty()
     data_table = st.empty()
