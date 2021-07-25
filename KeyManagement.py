@@ -27,6 +27,16 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded")
 
+# Create a connection object with googlesheets API
+scope = ['https://spreadsheets.google.com/feeds',
+     'https://www.googleapis.com/auth/drive']
+credentials = ServiceAccountCredentials.from_json_keyfile_name('key-management-318608-1e9ed181d642.json', scope) #Change to your downloaded JSON file name
+#credentials = service_account.Credentials.from_service_account_info(st.secrets['gcp_service_account'], scopes = scope)
+
+conn = connect(credentials=credentials)
+client = gc.authorize(credentials)
+spreadsheets = ['Key Management']
+
 #---------------------------------#
 # Title
 
@@ -50,33 +60,29 @@ key_list = list(range(1,71))
 decision = st.radio(
     "Would you like to withdraw or return the keys?",
     ('Withdraw', 'Return'))
-with st.form("Details"):
-    if decision == 'Withdraw':
+
+if decision == 'Withdraw':
+    with st.form("Details"):
         username = st.text_input("Please key in your name")
         selected_key = st.multiselect('Please select the key(s)', key_list)
         selected_keylist = list(selected_key)
         loc_list = ['FMC','EGR Bay','Gun Bay','WO Office','MS Office','Ops Office','Project Room','OIC Office', 'OC Office']
         selected_loc = st.selectbox('Which location is/are the key(s) drawn to?',loc_list)
-    else:
+        reset_selection = ''
+        st.form_submit_button(label='Submit',help='Press to confirm details')
+else:
+    with st.form("Details"):
+        st.markdown('''***You do not need to fill up your Name or Keys if
+        performing hard reset***''')
         username = st.text_input("Please key in your name")
         selected_key = st.multiselect('Please select the key(s)', key_list)
         selected_keylist = list(selected_key)
         selected_loc = 'Keypress'
-    st.form_submit_button(label='Submit',help='Press to confirm details')
-
-
-
-# Create a connection object.
-scope = ['https://spreadsheets.google.com/feeds',
-     'https://www.googleapis.com/auth/drive']
-credentials = ServiceAccountCredentials.from_json_keyfile_name('key-management-318608-1e9ed181d642.json', scope) #Change to your downloaded JSON file name
-#credentials = service_account.Credentials.from_service_account_info(st.secrets['gcp_service_account'], scopes = scope)
-
-conn = connect(credentials=credentials)
-client = gc.authorize(credentials)
-spreadsheets = ['Key Management']
+        reset_selection = st.selectbox('Please indicate if you would like to perform a hard reset',['No','Yes'])
+        st.form_submit_button(label='Submit',help='Press to confirm details')
 
 #@st.cache(suppress_st_warning=True)
+#Solely for displaying the data
 def display(spreadsheets):
     for spreadsheet in spreadsheets:
         sh=client.open(spreadsheet)
@@ -88,11 +94,11 @@ def display(spreadsheets):
             df_temp.loc[len(df_temp)] = data[i]
 
     return df_temp
-# Perform SQL query on the Google Sheet.
-# Uses st.cache to only rerun when the query changes or after 10 min.
+
+
 #@st.cache(suppress_st_warning=True)
+#For updating the database
 def main(spreadsheets):
-    df = pd.DataFrame()
     for spreadsheet in spreadsheets:
 		#Open the Spreadsheet
         sh = client.open(spreadsheet)
@@ -116,18 +122,61 @@ def main(spreadsheets):
     return df_temp
     #return df_temp
 
-#Printing/Updating of Key Status
-if username != '':
-    df_temp = main(spreadsheets)
+#Refresh database with new data
+def refresh(spreadsheets):
+    for spreadsheet in spreadsheets:
+        #Open the Spreadsheet
+        sh = client.open(spreadsheet)
+        #Get all values in the first worksheet
+        worksheet = sh.get_worksheet(0)
+        key_list = list(range(1,71))
+        location = ['Keypress' for i in range(1,71)]
+        username = ['Admin' for i in range(1,71)]
+        df_temp = pd.DataFrame(
+                {'Key No.': key_list,
+                'Name': username,
+                'Location': location})
+        worksheet.update([df_temp.columns.values.tolist()] + df_temp.values.tolist())
+        data = worksheet.get_all_values()
+        #Save the data inside the temporary pandas dataframe
+        df_temp = pd.DataFrame(columns = [i for i in range(len(data[0]))])
+        df_temp.columns = ['Key No.','Name','Location']
+        for i in range(1,len(data)):
+            df_temp.loc[len(df_temp)] = data[i]
+    return df_temp
 
-    with st.spinner('Searching through endless piles of paperwork...'):
-        time.sleep(2.5)
-    st.success('Located! I hope...')
+#Printing/Updating of Key Status
+if decision == 'Return':
+    #if username != '' and selected_loc != '' and selected_key != '':
+    if reset_selection == 'Yes':
+        df_temp = refresh(spreadsheets)
+        with st.spinner('Searching through endless piles of paperwork...'):
+            time.sleep(2.5)
+            st.success('Located! I hope...')
+        reset_selection = '' #Reset the variable
+    else:
+        if username != '' and selected_key != '' and selected_loc != '':
+            df_temp = main(spreadsheets)
+            with st.spinner('Searching through endless piles of paperwork...'):
+                time.sleep(2.5)
+                st.success('Located! I hope...')
+        else:
+            df_temp = display(spreadsheets)
+            with st.spinner('Searching through endless piles of paperwork...'):
+                time.sleep(2.5)
+                st.success('Located! I hope...')
 else :
-    df_temp = display(spreadsheets)
-    with st.spinner('Searching through endless piles of paperwork...'):
-        time.sleep(2.5)
-    st.success('Located! I hope...')
+    if username != '' and selected_key != '' and selected_loc != '':
+        df_temp = main(spreadsheets)
+        with st.spinner('Searching through endless piles of paperwork...'):
+            time.sleep(2.5)
+            st.success('Located! I hope...')
+    else:
+        df_temp = display(spreadsheets)
+        with st.spinner('Searching through endless piles of paperwork...'):
+            time.sleep(2.5)
+            st.success('Located! I hope...')
+
 
 #Plotting of Illustration of Key locations
 fig,ax = plt.subplots(figsize = (5,8))
