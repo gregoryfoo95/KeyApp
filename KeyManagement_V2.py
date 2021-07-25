@@ -127,16 +127,17 @@ st.markdown('Please follow the sequence of instructions stated below and refer t
 
 with st.beta_expander("🧙 Click here for more instructions on how to use this app 🔮"):
     st.markdown('''
-     <p>1) Select either 'Withdraw' or 'Return'.
-     <p>2) If Withdraw is selected, please indicate your Name, Key Nos and Location which it is drawn to.
-     <p>3) If Return is selected, please indicate your Name and Key Nos (Location is automatically set to Keypress).
-     <p>4) If Hard Reset is selected, you do not need to key in your name and Key Nos as all keys are returned to Keypress.
-     <p>4) Click on Submit to register the changes in the main database.
-     <p>5) Check the Overall Key Status at the bottom of the web app for an overview.
+     <p>1. Select either 'Withdraw' or 'Return'.
+     <p>2. If Withdraw is selected, please indicate your Name, Key Nos and Location which it is drawn to.
+     <p>3. If Return is selected, please indicate your Name and Key Nos (Location is automatically set to Keypress).
+     <p>4. If Hard Reset is selected, you do not need to key in your name and Key Nos as all keys are returned to Keypress.
+     <p>5. Click on Submit to register the changes in the main database.
+     <p>6. Check the Overall Key Status at the bottom of the web app for an overview.
      ''',unsafe_allow_html = True)
 #Creating User Input UI for key selection
 key_list = list(range(1,71))
 
+#Deciding question to dictate form
 decision = st.radio(
     "Would you like to withdraw or return the keys?",
     ('Withdraw', 'Return'))
