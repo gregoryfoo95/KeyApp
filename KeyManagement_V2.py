@@ -153,7 +153,7 @@ if decision == 'Withdraw':
         reset_selection = ''
         if st.form_submit_button(label='Submit',help='Press to confirm details'):
             with st.spinner("Loading..."):
-                time.sleep(1)
+                time.sleep(2)
                 st.success('Submitted!')
                 df_temp = main(spreadsheets)
 else:
@@ -166,7 +166,7 @@ else:
         selected_keylist = list(selected_key)
         selected_loc = 'Keypress'
         reset_selection = st.selectbox('Please indicate if you would like to perform a hard reset',['No','Yes'])
-        if st.form_submit_button('Submit'):
+        if st.form_submit_button(label='Submit',help='Press to confirm details'):
             with st.spinner("Loading..."):
                 time.sleep(2)
                 st.success('Submitted!')
@@ -211,6 +211,7 @@ else:
 #            st.success('Located! I hope...')
 
 #with st.beta_expander('Click here to show the Key Status Overview'):
+st.write('Current Booked-out Keys')
 with st.spinner('Painting the charts and drawing the tables...'):
     time.sleep(2)
     st.success('Success!')
@@ -233,6 +234,6 @@ with st.spinner('Painting the charts and drawing the tables...'):
     ax2.scatter(df_temp['Location'], df_temp['Key No.'], c = 'black', edgecolors = 'none', s = 20)
     ax2.tick_params(axis = 'y',labelsize = 5)
     plt.grid(color = 'lightgray', linestyle = '-.', linewidth = 0.5)
+    #Illustration of Booked-out keys
+    data_table.table(df_temp[(df_temp['Name'] != 'Admin') & (df_temp['Location'] != 'Keypress')].assign(hack = '').set_index('hack'))
     chart.pyplot(fig)
-    #Illustration of Overview
-    data_table.table(df_temp)
