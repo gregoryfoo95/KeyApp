@@ -45,8 +45,8 @@ st.set_page_config(
 # Create a connection object with googlesheets API
 scope = ['https://spreadsheets.google.com/feeds',
      'https://www.googleapis.com/auth/drive']
-#credentials = ServiceAccountCredentials.from_json_keyfile_name('key-management-318608-1e9ed181d642.json', scope) #Change to your downloaded JSON file name
-credentials = service_account.Credentials.from_service_account_info(st.secrets['gcp_service_account'], scopes = scope)
+credentials = ServiceAccountCredentials.from_json_keyfile_name('key-management-318608-1e9ed181d642.json', scope) #Change to your downloaded JSON file name
+#credentials = service_account.Credentials.from_service_account_info(st.secrets['gcp_service_account'], scopes = scope)
 
 conn = connect(credentials=credentials)
 client = gc.authorize(credentials)
@@ -153,7 +153,7 @@ if decision == 'Withdraw':
         reset_selection = ''
         if st.form_submit_button(label='Submit',help='Press to confirm details'):
             with st.spinner("Loading..."):
-                time.sleep(1)
+                time.sleep(2)
                 st.success('Submitted!')
                 df_temp = main(spreadsheets)
 else:
@@ -166,7 +166,7 @@ else:
         selected_keylist = list(selected_key)
         selected_loc = 'Keypress'
         reset_selection = st.selectbox('Please indicate if you would like to perform a hard reset',['No','Yes'])
-        if st.form_submit_button('Submit'):
+        if st.form_submit_button(label='Submit',help='Press to confirm details'):
             with st.spinner("Loading..."):
                 time.sleep(2)
                 st.success('Submitted!')
@@ -234,5 +234,5 @@ with st.spinner('Painting the charts and drawing the tables...'):
     ax2.tick_params(axis = 'y',labelsize = 5)
     plt.grid(color = 'lightgray', linestyle = '-.', linewidth = 0.5)
     chart.pyplot(fig)
-    #Illustration of Overview
-    data_table.table(df_temp)
+    #Illustration of Booked-out keys
+    data_table.table(df_temp[(df_temp['Name'] != 'Admin') & (df_temp['Location'] != 'Keypress')].assign(hack = '').set_index('hack'))
