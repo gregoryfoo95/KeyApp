@@ -211,7 +211,6 @@ else:
 #            st.success('Located! I hope...')
 
 #with st.beta_expander('Click here to show the Key Status Overview'):
-st.write('Current Booked-out Keys')
 with st.spinner('Painting the charts and drawing the tables...'):
     time.sleep(2)
     st.success('Success!')
@@ -234,6 +233,6 @@ with st.spinner('Painting the charts and drawing the tables...'):
     ax2.scatter(df_temp['Location'], df_temp['Key No.'], c = 'black', edgecolors = 'none', s = 20)
     ax2.tick_params(axis = 'y',labelsize = 5)
     plt.grid(color = 'lightgray', linestyle = '-.', linewidth = 0.5)
+    chart.pyplot(fig)
     #Illustration of Booked-out keys
     data_table.table(df_temp[(df_temp['Name'] != 'Admin') & (df_temp['Location'] != 'Keypress')].assign(hack = '').set_index('hack'))
-    chart.pyplot(fig)
